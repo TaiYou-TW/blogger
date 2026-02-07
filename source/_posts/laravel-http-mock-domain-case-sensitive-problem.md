@@ -2,14 +2,15 @@
 title: Laravel HTTP mock domain case-sensitive problem
 date: 2022-08-21 15:30:11
 tags:
-- Laravel
+    - laravel
+    - mocking
 ---
 
 ## Introduction
 
 簡單記錄一下之前在開發某個產品時踩到的雷，不過因為之後打算修正這個問題再發 PR，所以這邊就先用中文筆記一下問題，之前弄好的話再用英文寫一篇詳細的。
 
-而這個雷就如同標題所述，是個 HTTP 這個 Facade 中的 mock function 的問題，會導致 mock 失效，害我當初卡超久 （；´д｀）ゞ
+而這個雷就如同標題所述，是個 HTTP 這個 Facade 中的 mock function 的問題，會導致 mock 失效，害我當初卡超久 （；´д ｀）ゞ
 
 <!-- more -->
 
@@ -28,18 +29,17 @@ Http::fake([
 $this->get('google.com')->assertNotFound();
 ```
 
-而為了確認 domain 的確是大小寫不敏感，也就是 `https://Google.com` 等同於 `https://google.com`，我去翻了 RFC 1035 的[白皮書](
-https://www.rfc-editor.org/rfc/rfc1035)，確認他裡面的定義，引述一下內容：
+而為了確認 domain 的確是大小寫不敏感，也就是 `https://Google.com` 等同於 `https://google.com`，我去翻了 RFC 1035 的[白皮書](https://www.rfc-editor.org/rfc/rfc1035)，確認他裡面的定義，引述一下內容：
 
 > Note that while upper and lower case letters are allowed in domain
-names, no significance is attached to the case.  That is, two names with
-the same spelling but different case are to be treated as if identical.
+> names, no significance is attached to the case. That is, two names with
+> the same spelling but different case are to be treated as if identical.
 
 ## Code Trace
 
 後來 Trace 了一下底層的 Code，由於 mock 的部分看起來是沒有對大小寫處理，因此這邊就先不探討，只研究 Http send request 的部分，而 Laravel 這邊底層的實作是使用 psr7，所以我去翻了他的 source code，看到他的確有把 uri 中 host 的部分由大寫轉小寫，這邊實際 trace 一次：
 
-首先，我們簡單帶過前面的部分，只有最底層的 psr7 會講比較仔細（因為前面用 IDE trace 一下就有了XD）。
+首先，我們簡單帶過前面的部分，只有最底層的 psr7 會講比較仔細（因為前面用 IDE trace 一下就有了 XD）。
 
 這邊以 `post()` 為例：
 `vendor\laravel\framework\src\Illuminate\Http\Client\PendingRequest.php#659`

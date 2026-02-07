@@ -1,10 +1,10 @@
 ---
 title: port swigger web security academy sql injection
 date: 2022-06-04 00:18:43
-tags: 
-- web security
-- SQL injection
-- PortSwigger
+tags:
+    - web security
+    - sql injection
+    - portswigger
 ---
 
 ## Introduction
@@ -15,11 +15,11 @@ This article is the note of PortSwigger Web Security Academy's [SQL Injection](h
 
 ## Examples
 
-- Retrieving hidden data
-- Subverting application logic
-- UNION attack: retrieve data from other databases or tables.
-- Examining the database
-- Blind SQL injection
+-   Retrieving hidden data
+-   Subverting application logic
+-   UNION attack: retrieve data from other databases or tables.
+-   Examining the database
+-   Blind SQL injection
 
 ### Retrieving hidden data
 
@@ -93,11 +93,11 @@ Because every database have unique syntax, function, or variable...(there are so
 
 #### database-specific factors
 
-- Syntax for string concatenation
-- Comments
-- Batched or stacked queries
-- Platform-specific APIs
-- Error messages
+-   Syntax for string concatenation
+-   Comments
+-   Batched or stacked queries
+-   Platform-specific APIs
+-   Error messages
 
 After we know what kind of database is it, we can grab some informations about databases, tables, and columns.
 
@@ -113,17 +113,17 @@ When we can see the result of SQL query, we can use UNION to get the information
 
 But if the application does not return any results, we can still exploit it by following methods:
 
-- Conditionally change the logic of the query to trigger a detectable difference. For example, trigger an error such as a divide-by-zero.
-- Conditionally make a time delay.
-- Trigger an out-of-band interaction sush as placing the data into a DNS lookup for a domain we control.
+-   Conditionally change the logic of the query to trigger a detectable difference. For example, trigger an error such as a divide-by-zero.
+-   Conditionally make a time delay.
+-   Trigger an out-of-band interaction sush as placing the data into a DNS lookup for a domain we control.
 
 ## How to detect vulnerabilities
 
 To every entry point in the application, we can try:
 
-- Submitting `'` and looking for error or other abnormal response.
-- Submitting some SQL-specific syntax or conditions such as `OR 1=1` to change result of the query, and looking for differences in responses.
-- For those cannot see response, submitting payload to trigger time delays and looking for differences in the time taken to respond.
+-   Submitting `'` and looking for error or other abnormal response.
+-   Submitting some SQL-specific syntax or conditions such as `OR 1=1` to change result of the query, and looking for differences in responses.
+-   For those cannot see response, submitting payload to trigger time delays and looking for differences in the time taken to respond.
 
 ## Second-order SQL Injection
 
@@ -163,5 +163,5 @@ As a developer, we need to make sure we know the meaning of every single line of
 
 ## References
 
-- <https://portswigger.net/web-security/sql-injection>
-- <https://portswigger.net/web-security/sql-injection/cheat-sheet>
+-   <https://portswigger.net/web-security/sql-injection>
+-   <https://portswigger.net/web-security/sql-injection/cheat-sheet>

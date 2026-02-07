@@ -2,8 +2,8 @@
 title: Links
 ---
 
-## 朋友們的友站
+## 友站們
 
-- [UJ (as535364)](https://blog.ujoj.cc/)
-
-募集中，歡迎私訊👍
+-   [UJ (as535364)](https://blog.ujoj.cc/)
+-   [pwn2ooown](https://pwn2ooown.tech/)
+-   [Tonya](https://tonyatonya-nya.github.io/)

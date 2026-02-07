@@ -11,7 +11,7 @@ subtitle: 紀錄研究、技術、跟其他雜七雜八的文章
 # Content
 excerpt_link: Read More
 fancybox: true
-recent_posts_limits: 5
+recent_posts_limits: 10
 
 # Footer
 copyright: |-

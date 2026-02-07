@@ -2,9 +2,9 @@
 title: AIS3 2022 — CDN 技術所帶來的攻擊面向（下）
 date: 2022-10-10 19:50:00
 tags:
-- AIS3
-- web security
-- CDN
+    - ais3
+    - web security
+    - cdn
 ---
 
 Note: 這篇是下篇，還沒看過[上篇](https://fongyehong.top/blog/2022/10/10/ais3-cdn-and-how-to-attack-it-1/)的可以先看一下再回來這篇！
@@ -29,8 +29,8 @@ OK，回到前面講的，我們現在就算躲在 CDN 後面，還是可以得�
 
 這邊沒有特別有效的防禦方法，基本上還是需要有一個重要的概念：「永遠不要相信使用者」，因為這個 Header 是使用者可控的，因此不能完全相信它，只能當作參考，不過還是有幾種可以減緩風險的作法：
 
-- 同前，白名單僅允許 CDN 的 IP，封鎖有心人士繞過 CDN 後直接存取 Server 或 Application。
-- 敏感資訊或管理系統等的存取驗證不能僅用 IP 白名單來做，最好同時使用多種驗證方式（帳號密碼、OTP 等)。
+-   同前，白名單僅允許 CDN 的 IP，封鎖有心人士繞過 CDN 後直接存取 Server 或 Application。
+-   敏感資訊或管理系統等的存取驗證不能僅用 IP 白名單來做，最好同時使用多種驗證方式（帳號密碼、OTP 等)。
 
 ### 1.2. Post Exploitation - Bypass IP Deny
 
@@ -110,7 +110,7 @@ CDN 加速的其中一種方法，就是透過 Cache 來達成的，例如使用
 
 ### 1.4. Cache Poisoned Denial Of Service (CPDoS)
 
-目前由於 DDoS 的成本越來越低，導致發生的頻率與規模越來越高，前陣子 Cloudflare 才剛發布 2600萬 requests/s 的紀錄，怕。而同樣的，攻擊者也可以透過前述的 Cache Poisoning 來達成 DoS 的攻擊。
+目前由於 DDoS 的成本越來越低，導致發生的頻率與規模越來越高，前陣子 Cloudflare 才剛發布 2600 萬 requests/s 的紀錄，怕。而同樣的，攻擊者也可以透過前述的 Cache Poisoning 來達成 DoS 的攻擊。
 
 以下三種攻擊的原理皆為讓 Cache Server 把錯誤的頁面 Cache 起來，導致正常使用者後續都只能得到該錯誤頁面，進而達到 DoS 的效果；而流量放大則是透過 CDN 大部分為流量計價的原理，用大量的流量迅速達到網站的預算上限而停止服務。
 
@@ -162,11 +162,11 @@ DDOS 有一種很常見的方法就是流量放大，但至於如何達到就有
 
 #### 1.4.5. Defense
 
-- 選擇具有威信的 CDN 服務廠商，並確認計價行為，避免被 DDOS 時產生大量的費用或服務中斷
-- 遵循 RFC 標準開發，並對可 Cache 的狀態設白名單，避免 Cache 到錯誤頁面
-- 確保 Server 架構與 CDN 不衝突
-- 異常頁面加入 `Cache-COntrol: no-store`
-- 與提供商簽訂 SLA（服務水準協議），明定如 DDOS 時發生時應如何收費等，確保權益
+-   選擇具有威信的 CDN 服務廠商，並確認計價行為，避免被 DDOS 時產生大量的費用或服務中斷
+-   遵循 RFC 標準開發，並對可 Cache 的狀態設白名單，避免 Cache 到錯誤頁面
+-   確保 Server 架構與 CDN 不衝突
+-   異常頁面加入 `Cache-COntrol: no-store`
+-   與提供商簽訂 SLA（服務水準協議），明定如 DDOS 時發生時應如何收費等，確保權益
 
 ### 1.5. Domain Fronting
 
@@ -178,7 +178,7 @@ Domain Fronting 就是可以利用修改 Host Header，來達成 Domain 與實�
 
 ### 1.6. HTTP Desync Request Smuggling
 
- 這也是一個利用「不一致」所達成的攻擊手法，首先需要了解一下 HTTP 的持久連接（HTTP persistent connection）：
+這也是一個利用「不一致」所達成的攻擊手法，首先需要了解一下 HTTP 的持久連接（HTTP persistent connection）：
 
 ![img](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/HTTP_persistent_connection.svg/langzh-450px-HTTP_persistent_connection.svg.png)
 
@@ -199,11 +199,11 @@ Domain Fronting 就是可以利用修改 Host Header，來達成 Domain 與實�
 
 1. 同時傳兩種會怎樣？
 
-   這點 [RFC 2616](https://www.rfc-editor.org/rfc/rfc2616#page-34) 有定義（4.4 Message Length 倒數第二段），一起傳時必須忽略 Content-Length，聽起來蠻合理的，畢竟新的優先度比較高很正常。但CDN 跟 Server 可能有不一樣的行為（總有人不照規範走😶），例如一個讀 `Content-Length`，一個讀 `Transfer-Encoding`，就會導致前面提到封包穿插的問題。
+    這點 [RFC 2616](https://www.rfc-editor.org/rfc/rfc2616#page-34) 有定義（4.4 Message Length 倒數第二段），一起傳時必須忽略 Content-Length，聽起來蠻合理的，畢竟新的優先度比較高很正常。但 CDN 跟 Server 可能有不一樣的行為（總有人不照規範走 😶），例如一個讀 `Content-Length`，一個讀 `Transfer-Encoding`，就會導致前面提到封包穿插的問題。
 
 2. 同時傳兩個一樣的會怎樣？
 
-   RFC 2616 沒想過有這種情況🤔所以沒有標準規範的情況下，實作時就會有很大的差異空間，所以跟前面一樣，若 CDN 與 Server 取不同的 Header 也會有一樣的問題。
+    RFC 2616 沒想過有這種情況 🤔 所以沒有標準規範的情況下，實作時就會有很大的差異空間，所以跟前面一樣，若 CDN 與 Server 取不同的 Header 也會有一樣的問題。
 
 #### 1.6.2. Defense
 
@@ -214,12 +214,12 @@ Domain Fronting 就是可以利用修改 Host Header，來達成 Domain 與實�
 
 ## 2. Summary
 
-打完發現這篇超長，只好分兩篇了😶。在這堂課學到蠻多 CDN 攻擊的知識，很多攻擊技巧也非常酷，讓我大開眼界 XD，沒想到這些很方便的功能或是服務可以被這樣利用。雖然很多攻擊技巧都是好幾年前的，大廠牌的 CDN 提供商也大部分都已經修正了，不過有些小型或是知名度較低的廠商可能就尚未修正或是修正的不完全，所以可能就會讓攻擊者有機可趁，因此選用服務商時還是盡量選用口碑好或大廠牌的，貴是有它的道理的（？）。
+打完發現這篇超長，只好分兩篇了 😶。在這堂課學到蠻多 CDN 攻擊的知識，很多攻擊技巧也非常酷，讓我大開眼界 XD，沒想到這些很方便的功能或是服務可以被這樣利用。雖然很多攻擊技巧都是好幾年前的，大廠牌的 CDN 提供商也大部分都已經修正了，不過有些小型或是知名度較低的廠商可能就尚未修正或是修正的不完全，所以可能就會讓攻擊者有機可趁，因此選用服務商時還是盡量選用口碑好或大廠牌的，貴是有它的道理的（？）。
 
 ## 3. References
 
 1. [Bypassing CDN WAFs with alternate domain routing](https://blog.apnic.net/2022/05/19/bypassing-cdn-wafs-with-alternate-domain-routing/)
 2. [Using Page Rules to rewrite Host Headers - Cloudflare](https://support.cloudflare.com/hc/en-us/articles/206652947-Using-Page-Rules-to-rewrite-Host-Headers)
 3. [RSAC 2019: camouflage for the attackers' communication channel | Kaspersky official blog](https://www.kaspersky.com/blog/domain-fronting-rsa2019/26352/)[RSAC 2019: camouflage for the attackers' communication channel | Kaspersky official blog](https://www.kaspersky.com/blog/domain-fronting-rsa2019/26352/)
-4. [HTTP持久連接 - 維基百科，自由的百科全書 (wikipedia.org)](https://zh.wikipedia.org/zh-tw/HTTP持久连接)
+4. [HTTP 持久連接 - 維基百科，自由的百科全書 (wikipedia.org)](https://zh.wikipedia.org/zh-tw/HTTP持久连接)
 5. [HTTP Desync Attacks: Request Smuggling Reborn | PortSwigger Research](https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn)
